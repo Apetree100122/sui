@@ -22,7 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'rust', 'c', 'typescript', 'python', 'javascript' ] # Adjust as needed
-
+- name: Initialize CodeQL
+  uses: github/codeql-action/init@v3
+  env:
+    CODEQL_ENABLE_EXPERIMENTAL_FEATURES: true
+  with:
+    languages: rust
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
