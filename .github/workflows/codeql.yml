@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "main" ]
   schedule:
     - cron: '0 4 * * 0'
@@ -13,10 +12,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    # Consider using larger runners for faster analysis:
-    # https://gh.io/recommended-hardware-resources-for-running-codeql
-    # https://gh.io/supported-runners-and-hardware-resources
-    # https://gh.io/using-larger-runners
 
     permissions:
       actions: read
@@ -26,21 +21,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'rust', 'c', 'typescript', 'python', 'javascript' ] # Add/remove as needed
+        language: [ 'rust', 'c', 'typescript', 'python', 'javascript' ] # Adjust as needed
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
