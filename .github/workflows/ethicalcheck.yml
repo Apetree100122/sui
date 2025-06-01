@@ -1,0 +1,42 @@
+name: EthicalCheck Code Scanning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ethicalcheck:
+    name: Run EthicalCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Rust toolchain
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: stable
+
+      # Build the project (Rust)
+      - name: Build with Cargo
+        run: cargo build --all-targets
+
+      # (Optional) Run tests
+      - name: Run tests
+        run: cargo test --all
+
+      # Run EthicalCheck (replace with actual tool/step)
+      - name: Run EthicalCheck
+        uses: ethicalcheck/action@v1
+        with:
+          # add any specific arguments or configuration here
+        continue-on-error: false
+
+      # Upload code scanning results (if EthicalCheck produces a SARIF file)
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif # Update path if needed
